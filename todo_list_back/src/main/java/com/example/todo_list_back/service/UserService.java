@@ -2,6 +2,7 @@ package com.example.todo_list_back.service;
 
 import com.example.todo_list_back.config.jwt.JwtTokenProvider;
 import com.example.todo_list_back.dto.user.RegisterUserDto;
+import com.example.todo_list_back.dto.user.UserDtoGet;
 import com.example.todo_list_back.entity.Role;
 import com.example.todo_list_back.entity.User;
 import com.example.todo_list_back.repository.UserRepository;
@@ -38,7 +39,7 @@ public class UserService implements UserDetailsService {
         return  userRepository.findByEmail(email).orElseThrow( () -> new UsernameNotFoundException("User not found") );
     }
 
-    public User getById(Long id) {
+    public User getUserById(Long id) {
         return userRepository.findById(id).orElseThrow( () -> new UsernameNotFoundException("User not found") );
     }
 
@@ -71,5 +72,18 @@ public class UserService implements UserDetailsService {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         return jwtTokenProvider.generateToken(authentication);
+    }
+
+    public UserDtoGet getUserDtoGetById(Long id){
+        return userToUserDtoGet(getUserById(id));
+    }
+
+    private UserDtoGet userToUserDtoGet(User user) {
+        return UserDtoGet.builder()
+                .id(user.getId())
+                .email(user.getEmail())
+                .role(user.getRole())
+                .name(user.getName())
+                .build();
     }
 }

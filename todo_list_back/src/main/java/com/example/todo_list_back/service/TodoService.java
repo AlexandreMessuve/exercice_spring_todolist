@@ -2,6 +2,7 @@ package com.example.todo_list_back.service;
 
 import com.example.todo_list_back.dto.todo.TodoDtoGet;
 import com.example.todo_list_back.dto.todo.TodoDtoPost;
+import com.example.todo_list_back.dto.user.UserDtoGet;
 import com.example.todo_list_back.entity.Todo;
 import com.example.todo_list_back.entity.User;
 import com.example.todo_list_back.exception.NotFoundException;
@@ -49,7 +50,7 @@ public class TodoService implements BaseService<TodoDtoPost, TodoDtoGet> {
 
     @Override
     public List<TodoDtoGet> getAll() {
-        return List.of();
+        return todoListToTodoDtoGetList(todoRepository.findAll());
     }
 
     @Override
@@ -61,7 +62,7 @@ public class TodoService implements BaseService<TodoDtoPost, TodoDtoGet> {
         return todoRepository.findById(id).orElseThrow(() -> new NotFoundException("Not found todo with id"+id));
     }
     private Todo todoDtoPostToTodo(TodoDtoPost todoDtoPost) {
-        User user = userService.getById(todoDtoPost.getUserId());
+        User user = userService.getUserById(todoDtoPost.getUserId());
         return Todo.builder()
                 .title(todoDtoPost.getTitle())
                 .description(todoDtoPost.getDescription())
@@ -74,6 +75,7 @@ public class TodoService implements BaseService<TodoDtoPost, TodoDtoGet> {
     }
 
     private TodoDtoGet todoToTodoDtoGet(Todo todo) {
+        UserDtoGet user = userService.getUserDtoGetById(todo.getUser().getId());
         return TodoDtoGet.builder()
                 .id(todo.getId())
                 .title(todo.getTitle())
@@ -81,7 +83,7 @@ public class TodoService implements BaseService<TodoDtoPost, TodoDtoGet> {
                 .completed(todo.isCompleted())
                 .createdAt(todo.getCreatedAt())
                 .updatedAt(todo.getUpdatedAt())
-                .user(todo.getUser())
+                .user(user)
                 .build();
     }
 

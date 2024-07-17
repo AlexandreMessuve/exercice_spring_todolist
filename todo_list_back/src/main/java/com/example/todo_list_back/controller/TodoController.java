@@ -13,7 +13,7 @@ public class TodoController {
     @Autowired
     private TodoService todoService;
 
-    @GetMapping("/")
+    @GetMapping()
     public List<TodoDtoGet> getAll() {
         return todoService.getAll();
     }
