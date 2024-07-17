@@ -43,6 +43,7 @@ public class UserService implements UserDetailsService {
     }
 
     public boolean addUser(RegisterUserDto user) {
+        System.out.println(user);
         userRepository.save(registerUserDtoToUser(user));
         return true;
     }
