@@ -22,6 +22,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     private JwtTokenProvider jwtTokenProvider;
 
     @Autowired
+    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    @Autowired
     private UserService userService;
 
     @Override
@@ -38,7 +40,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         }
         catch (AuthenticationException e){
-            SecurityContextHolder.clearContext();
+            jwtAuthenticationEntryPoint.commence(request, response, e);
         }
     }
 

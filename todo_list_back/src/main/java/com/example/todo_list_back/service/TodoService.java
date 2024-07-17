@@ -8,10 +8,13 @@ import com.example.todo_list_back.entity.User;
 import com.example.todo_list_back.exception.NotFoundException;
 import com.example.todo_list_back.repository.TodoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,13 +35,18 @@ public class TodoService implements BaseService<TodoDtoPost, TodoDtoGet> {
 
     @Override
     public boolean update(Long id,TodoDtoPost t) {
+        User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Todo todo = getTodoById(id);
-        todo.setTitle(t.getTitle());
-        todo.setDescription(t.getDescription());
-        todo.setCompleted(t.isCompleted());
-        todo.setUpdatedAt(LocalDateTime.now());
-        todoRepository.save(todo);
-        return true;
+        if (!Objects.equals(currentUser.getId(), todo.getUser().getId())) {
+            return false;
+        }
+            todo.setTitle(t.getTitle());
+            todo.setDescription(t.getDescription());
+            todo.setCompleted(t.isCompleted());
+            todo.setUpdatedAt(LocalDateTime.now());
+            todoRepository.save(todo);
+            return true;
+
     }
 
     @Override
