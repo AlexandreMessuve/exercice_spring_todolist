@@ -1,4 +1,4 @@
-package com.example.todo_list_back.dto;
+package com.example.todo_list_back.dto.user;
 
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
