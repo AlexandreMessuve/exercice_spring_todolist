@@ -1,5 +1,6 @@
 package com.example.todo_list_back.dto.todo;
 
+import com.example.todo_list_back.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -12,6 +13,7 @@ public class TodoDtoGet {
     private String title;
     private String description;
     private boolean completed;
+    private User user;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }
