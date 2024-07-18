@@ -1,35 +1,72 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import {Link, Outlet, useNavigate} from "react-router-dom";
+import './index.css';
+import {URL_CREATE_TODO, URL_HOME, URL_LOGIN, URL_REGISTER, URL_TODO} from "./constant/urlFront.js";
+import {selectHasRole, selectIsLogged, selectToken, signIn, signOut} from "./redux-store/authenticationSlice.js";
+import {useEffect, useState} from "react";
+import {getToken, isTokenValid} from "./service/jwtTokenService.js";
+import {useDispatch, useSelector} from "react-redux";
+import {ROLE_ADMIN} from "./constant/roles.js";
+import {getTodos} from "./redux-store/todoSlice.js";
 
 function App() {
-  const [count, setCount] = useState(0)
+    const isLogged = useSelector(selectIsLogged);
+    const token = useSelector(selectToken);
+    const isAdmin = useSelector((state) => selectHasRole(state, ROLE_ADMIN));
+    const [isLogin, setIsLogin] = useState(true);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    useEffect(() => {
+        const token = getToken();
+        if (token) dispatch(signIn(token));
+        setIsLogin(false);
+    }, [])
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    useEffect(() => {
+        setInterval(() => {
+            if (token){
+                if (!isTokenValid(token)) {
+                    handleLogout()
+                }
+            }
+        }, 1000)
+    }, [token])
+    const handleLogout = () => {
+        dispatch(signOut());
+        navigate(URL_LOGIN);
+    }
+
+    if (isLogin) return null;
+
+    return (
+        <>
+            <header>
+                <nav className={'text-center'}>
+                    {isLogged ? (
+                        <>
+                            <Link className={'mx-2'} to={URL_HOME}>Home</Link>
+                            {isAdmin ? (
+                                <>
+                                    <Link className={'mx-2'} to={URL_CREATE_TODO}>Create todo</Link>
+                                </>
+                            ):(
+                                <>
+                                </>
+                            )}
+
+
+                            <Link className={'mx-2'} to={"#"} onClick={handleLogout}>Logout</Link>
+                        </>
+                    ) : (
+                        <>
+                            <Link className={'mx-2'} to={URL_LOGIN}>Login</Link>
+                            <Link className={'mx-2'} to={URL_REGISTER}>Register</Link>
+                        </>
+                    )}
+                </nav>
+            </header>
+            <Outlet />
+        </>
+    )
 }
 
 export default App
