@@ -40,18 +40,22 @@ public class TodoService implements BaseService<TodoDtoPost, TodoDtoGet> {
         if (!Objects.equals(currentUser.getId(), todo.getUser().getId())) {
             return false;
         }
-            todo.setTitle(t.getTitle());
-            todo.setDescription(t.getDescription());
-            todo.setCompleted(t.isCompleted());
-            todo.setUpdatedAt(LocalDateTime.now());
-            todoRepository.save(todo);
-            return true;
+        todo.setTitle(t.getTitle());
+        todo.setDescription(t.getDescription());
+        todo.setCompleted(t.isCompleted());
+        todo.setUpdatedAt(LocalDateTime.now());
+        todoRepository.save(todo);
+        return true;
 
     }
 
     @Override
     public boolean delete(Long id) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Todo todo = getTodoById(id);
+        if (!Objects.equals(user.getId(), todo.getUser().getId())) {
+            return false;
+        }
         todoRepository.delete(todo);
         return true;
     }
@@ -66,9 +70,22 @@ public class TodoService implements BaseService<TodoDtoPost, TodoDtoGet> {
         return todoToTodoDtoGet(getTodoById(id));
     }
 
+    public List<TodoDtoGet> getTodoByUserId(Long userId) {
+        User user = userService.getUserById(userId);
+        return todoListToTodoDtoGetList(getTodoListByUser(user));
+    }
+
     private Todo getTodoById(Long id) {
         return todoRepository.findById(id).orElseThrow(() -> new NotFoundException("Not found todo with id"+id));
     }
+
+    private List<Todo> getTodoListByUser(User user) {
+        return todoRepository.findByUser(user);
+    }
+
+
+
+
     private Todo todoDtoPostToTodo(TodoDtoPost todoDtoPost) {
         User user = userService.getUserById(todoDtoPost.getUserId());
         return Todo.builder()
