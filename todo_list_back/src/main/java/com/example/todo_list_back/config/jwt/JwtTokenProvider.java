@@ -32,7 +32,7 @@ public class JwtTokenProvider {
         String username = authentication.getName();
         Long userId = ((User) authentication.getPrincipal()).getId();
         Date currentDate = new Date();
-        Date expirationDate = new Date(currentDate.getTime() + 1000 * 60 * 60 * 24);
+        Date expirationDate = new Date(currentDate.getTime() + 1000 * 60 * 60 * 3);
         String roles = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining(","));
         return Jwts.builder()
                 .setSubject(username)
