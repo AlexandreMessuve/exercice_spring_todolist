@@ -3,6 +3,7 @@ import {getTodos, selectError, selectTodos, selectStatus} from "../redux-store/t
 import {useEffect} from "react";
 import {selectHasRole, selectToken} from "../redux-store/authenticationSlice.js";
 import {ROLE_ADMIN} from "../constant/roles.js";
+import TodoItem from "../components/todo/TodoItem.jsx";
 
 const HomePage = () => {
     const isAdmin = useSelector((state) => selectHasRole(state, ROLE_ADMIN));
@@ -30,18 +31,31 @@ const HomePage = () => {
     return (
         <>
             <h1>Home</h1>
-            <ul>
-                {todos.map((todo) => (
-                    <li key={todo.id}>{todo.title}</li>
-                ))}
-            </ul>
             {
                 todos.length === 0 ? (
                     <>
                      <p>Vide</p>
                     </>
                 ):(
-                    <></>
+                    <>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Title</th>
+                                    <th>Description</th>
+                                    <th>User</th>
+                                    <th>Completed</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {todos.map((todo) => (
+                                    <TodoItem key={todo.id} todo={todo} />
+                                ))}
+                            </tbody>
+                        </table>
+                    </>
                 )
             }
         </>

@@ -1,12 +1,12 @@
-import {Link, Outlet, useNavigate} from "react-router-dom";
+import {Outlet, useNavigate} from "react-router-dom";
 import './index.css';
-import {URL_CREATE_TODO, URL_HOME, URL_LOGIN, URL_REGISTER, URL_TODO} from "./constant/urlFront.js";
+import {URL_LOGIN} from "./constant/urlFront.js";
 import {selectHasRole, selectIsLogged, selectToken, signIn, signOut} from "./redux-store/authenticationSlice.js";
 import {useEffect, useState} from "react";
 import {getToken, isTokenValid} from "./service/jwtTokenService.js";
 import {useDispatch, useSelector} from "react-redux";
 import {ROLE_ADMIN} from "./constant/roles.js";
-import {getTodos} from "./redux-store/todoSlice.js";
+import NavBar from "./components/layout/NavBar.jsx";
 
 function App() {
     const isLogged = useSelector(selectIsLogged);
@@ -39,32 +39,19 @@ function App() {
 
     return (
         <>
-            <header>
-                <nav className={'text-center'}>
-                    {isLogged ? (
-                        <>
-                            <Link className={'mx-2'} to={URL_HOME}>Home</Link>
-                            {isAdmin ? (
-                                <>
-                                    <Link className={'mx-2'} to={URL_CREATE_TODO}>Create todo</Link>
-                                </>
-                            ):(
-                                <>
-                                </>
-                            )}
-
-
-                            <Link className={'mx-2'} to={"#"} onClick={handleLogout}>Logout</Link>
-                        </>
-                    ) : (
-                        <>
-                            <Link className={'mx-2'} to={URL_LOGIN}>Login</Link>
-                            <Link className={'mx-2'} to={URL_REGISTER}>Register</Link>
-                        </>
-                    )}
-                </nav>
-            </header>
-            <Outlet />
+            {
+                isLogged ? (
+                    <>
+                        <header>
+                           <NavBar isAdmin={isAdmin} handleLogout={handleLogout} />
+                        </header>
+                    </>
+                ) : (
+                    <>
+                    </>
+                )
+            }
+            <Outlet/>
         </>
     )
 }
