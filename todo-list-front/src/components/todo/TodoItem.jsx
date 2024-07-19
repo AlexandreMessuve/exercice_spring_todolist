@@ -45,22 +45,33 @@ const TodoItem = ({todo}) => {
 
     return(
     <>
-        <tr>
-            <td>{todo.id}</td>
-            <td>{todo.title}</td>
-            <td>{todo.description}</td>
-            <td>{todo.user.email.split("@")[0]}</td>
-            <td>
-                <input type={"checkbox"} checked={completed} disabled={!isAdmin} onClick={handleCompleted} />
-            </td>
-            <td>
+        <tr className="hover:bg-gray-100 dark:hover:bg-neutral-900">
+            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200">{todo.id}</td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">{todo.title}</td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">{todo.description}</td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">{todo.user.email.split("@")[0]}</td>
                 {isAdmin ? (
                     <>
-                        <Link to={URL_UPDATE_TODO+ `/${todo.id}`}>Update</Link>
-                        <Link to={'#'} onClick={handleDelete}>Delete</Link>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
+                            <input type={"checkbox"} checked={completed} onClick={handleCompleted}/>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            <Link
+                                className="items-center text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400"
+                                to={URL_UPDATE_TODO + `/${todo.id}`}>Update</Link>
+                            <Link
+                                className="mx-2 items-center text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400"
+                                to={'#'} onClick={handleDelete}>Delete</Link>
+                        </td>
                     </>
-                ):(<></>)}
-            </td>
+                ) : (
+                    <>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
+                            {completed ? "Yes":"No"}
+                        </td>
+                    </>
+                )}
+
         </tr>
 
     </>

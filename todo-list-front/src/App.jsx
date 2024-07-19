@@ -1,12 +1,15 @@
+import {useEffect, useState} from "react";
 import {Outlet, useNavigate} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {toast, ToastContainer} from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 import './index.css';
 import {URL_LOGIN} from "./constant/urlFront.js";
 import {selectHasRole, selectIsLogged, selectToken, signIn, signOut} from "./redux-store/authenticationSlice.js";
-import {useEffect, useState} from "react";
 import {getToken, isTokenValid} from "./service/jwtTokenService.js";
-import {useDispatch, useSelector} from "react-redux";
 import {ROLE_ADMIN} from "./constant/roles.js";
 import NavBar from "./components/layout/NavBar.jsx";
+
 
 function App() {
     const isLogged = useSelector(selectIsLogged);
@@ -24,6 +27,8 @@ function App() {
     useEffect(() => {
         setInterval(() => {
             if (token){
+                console.log(token)
+                console.log('oui')
                 if (!isTokenValid(token)) {
                     handleLogout()
                 }
@@ -32,6 +37,7 @@ function App() {
     }, [token])
     const handleLogout = () => {
         dispatch(signOut());
+        toast.success('Bye bye !')
         navigate(URL_LOGIN);
     }
 
@@ -42,7 +48,7 @@ function App() {
             {
                 isLogged ? (
                     <>
-                        <header>
+                        <header className={"border-b-2 border-b-gray-900 dark:border-b-gray-200"}>
                            <NavBar isAdmin={isAdmin} handleLogout={handleLogout} />
                         </header>
                     </>
@@ -52,6 +58,7 @@ function App() {
                 )
             }
             <Outlet/>
+            <ToastContainer position={'bottom-right'}/>
         </>
     )
 }
