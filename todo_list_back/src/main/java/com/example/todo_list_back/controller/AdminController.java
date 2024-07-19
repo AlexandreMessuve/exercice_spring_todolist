@@ -5,6 +5,8 @@ import com.example.todo_list_back.dto.todo.TodoDtoGet;
 import com.example.todo_list_back.dto.todo.TodoDtoPost;
 import com.example.todo_list_back.entity.User;
 import com.example.todo_list_back.service.TodoService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,6 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/admin")
 public class AdminController {
+    private static final Logger log = LoggerFactory.getLogger(AdminController.class);
     @Autowired
     private TodoService todoService;
 

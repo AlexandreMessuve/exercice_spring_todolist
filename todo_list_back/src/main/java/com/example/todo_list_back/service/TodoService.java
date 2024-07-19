@@ -7,8 +7,8 @@ import com.example.todo_list_back.entity.Todo;
 import com.example.todo_list_back.entity.User;
 import com.example.todo_list_back.exception.NotFoundException;
 import com.example.todo_list_back.repository.TodoRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +25,8 @@ public class TodoService implements BaseService<TodoDtoPost, TodoDtoGet> {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private ObjectMapper jacksonObjectMapper;
 
     @Override
     public boolean create(TodoDtoPost t) {
