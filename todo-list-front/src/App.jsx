@@ -45,20 +45,23 @@ function App() {
 
     return (
         <>
-            {
-                isLogged ? (
-                    <>
-                        <header className={"border-b-2 border-b-gray-900 dark:border-b-gray-200"}>
-                           <NavBar isAdmin={isAdmin} handleLogout={handleLogout} />
-                        </header>
-                    </>
-                ) : (
-                    <>
-                    </>
-                )
-            }
-            <Outlet/>
-            <ToastContainer position={'bottom-right'}/>
+            <div className={"min-h-screen bg-gray-50 dark:bg-gray-900"}>
+                {
+                    isLogged ? (
+                        <>
+                            <header className={"border-b-2 border-b-gray-900 dark:border-b-gray-200"}>
+                                <NavBar isAdmin={isAdmin} handleLogout={handleLogout} />
+                            </header>
+                        </>
+                    ) : (
+                        <>
+                        </>
+                    )
+                }
+                <Outlet/>
+                <ToastContainer position={'bottom-right'}/>
+            </div>
+
         </>
     )
 }
