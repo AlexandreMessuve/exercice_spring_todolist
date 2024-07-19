@@ -1,7 +1,7 @@
 import {useDispatch} from "react-redux";
 import {authenticate} from "../../service/api/api.auth.js";
 import {Link, useNavigate} from "react-router-dom";
-import {URL_HOME, URL_LOGIN, URL_REGISTER} from "../../constant/urlFront.js";
+import {URL_HOME, URL_REGISTER} from "../../constant/urlFront.js";
 import {signIn} from "../../redux-store/authenticationSlice.js";
 import {ErrorMessage, Field, Form, Formik} from "formik";
 import {LoginInitialValues} from "../../formik/initial-value/user.js";
@@ -75,7 +75,7 @@ export const  LoginComponent = () => {
                                                 className={className.submit}>Submit
                                         </button>
                                         <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                                            Already not have an account? <Link to={URL_REGISTER}
+                                            Not have an account? <Link to={URL_REGISTER}
                                                                            className="font-medium text-primary-600 hover:underline dark:text-primary-500">Register
                                             here</Link>
                                         </p>
