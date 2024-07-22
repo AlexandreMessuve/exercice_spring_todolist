@@ -17,22 +17,33 @@ const HomePage = () => {
     const dispatch = useDispatch();
     const todos = useSelector(selectTodos);
 
+
+
     useEffect(() => {
         const payload = {
             isAdmin,
             token
         }
-        dispatch(getTodos(payload));
+        const fetchTodos = () => {
+            dispatch(getTodos(payload));
+        }
+        fetchTodos()
+
+        const interval = setInterval(() => fetchTodos(), 1000*60)
+        return () => clearInterval(interval);
     }, [dispatch, isAdmin, token]);
 
     useEffect(() => {
         if (status === "succeeded" && error === null) {
-            setLoading(false)
+            setLoading(false);
         }
     }, [status, error])
+
     useEffect(() => {
         console.log(todos)
     }, [todos])
+
+    if (isLoading) return <p className={"text-center"}>Loading....</p>
     return (
         <>
             <div className="flex flex-col">

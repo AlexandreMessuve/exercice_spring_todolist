@@ -51,7 +51,7 @@ export const todoDelete = createAsyncThunk(
             try {
                 const response = await deleteTodo(todoId, token);
                 if (response.status === 200) {
-                    return {isAdmin, token};
+                    return {todoId};
                 } else {
                     return rejectWithValue(response.data);
                 }
@@ -92,7 +92,6 @@ export const todoSlice = createSlice({
             .addCase(createTodo.fulfilled, (state, action) => {
                 state.status = 'succeeded';
                 state.error = null;
-                getTodos(action.payload);
             })
             .addCase(createTodo.rejected, (state, action) => {
                 state.status = 'failed';
@@ -105,11 +104,11 @@ export const todoSlice = createSlice({
             .addCase(todoUpdate.fulfilled, (state, action) => {
                 state.status = 'succeeded';
                 state.error = null;
-                getTodos(action.payload)
             })
             .addCase(todoUpdate.rejected, (state, action) => {
                 state.status = 'failed';
                 state.error = action.payload;
+
             })
             .addCase(todoDelete.pending, (state) => {
                 state.status = 'loading';
@@ -117,8 +116,8 @@ export const todoSlice = createSlice({
             })
             .addCase(todoDelete.fulfilled, (state, action) => {
                 state.status = 'succeeded';
+                state.todosList = state.todosList.filter((todo) => todo.id != action.payload.todoId)
                 state.error = null;
-                getTodos(action.payload)
             })
             .addCase(todoDelete.rejected, (state, action) => {
                 state.status = 'failed';
@@ -144,9 +143,5 @@ export const selectTodos = (state) => state.todo.todosList;
 export const selectError = (state) => state.todo.error;
 export const selectStatus = (state) => state.todo.status;
 export const selectIsError = (state) => state.todo.error != null;
-export const selectTodoById = (state, todoId) => state.todosList.forEach((todo) => {
-    if (todo.id === todoId){
-        return todo;
-    }
-})
+export const selectTodoById = (state, todoId) => state.todosList.find((todo) => todo.id == todoId)
 export default todoSlice.reducer;

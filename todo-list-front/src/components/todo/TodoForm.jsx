@@ -5,8 +5,9 @@ import {Field, Form, Formik} from "formik";
 import {selectHasRole, selectToken, selectUser} from "../../redux-store/authenticationSlice.js";
 import {ROLE_ADMIN} from "../../constant/roles.js";
 import {URL_HOME} from "../../constant/urlFront.js";
-import {createTodo, selectIsError, todoUpdate} from "../../redux-store/todoSlice.js";
+import {createTodo, getTodos, selectIsError, todoUpdate} from "../../redux-store/todoSlice.js";
 import {useState} from "react";
+import {toast} from "react-toastify";
 
 export const  TodoForm = ({todo}) => {
     const dispatch = useDispatch();
@@ -22,6 +23,8 @@ export const  TodoForm = ({todo}) => {
             submit: "w-full my-3 text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         });
     const handleSubmit = (values) => {
+        let message;
+        let errorMessage;
         if (todo === null){
             const payload = {
                 isAdmin,
@@ -29,6 +32,8 @@ export const  TodoForm = ({todo}) => {
                 token
             }
             dispatch(createTodo(payload));
+            message = 'Todo created successfully';
+            errorMessage = 'Create failed';
         }else{
             const payload = {
                 isAdmin,
@@ -37,11 +42,17 @@ export const  TodoForm = ({todo}) => {
                 token
             }
             dispatch(todoUpdate(payload))
+            message = 'Todo updated successfully';
+            errorMessage = 'Update failed';
+        }
+        if (!isError){
+            dispatch(getTodos({isAdmin, token}))
+            toast.success(message)
+            navigate(URL_HOME);
+        }else{
+            toast.error(errorMessage)
         }
 
-        if (!isError){
-            navigate(URL_HOME);
-        }
     }
 
     return(

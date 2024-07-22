@@ -33,7 +33,7 @@ function App() {
                     handleLogout()
                 }
             }
-        }, 1000)
+        }, 1000 * 60)
     }, [token])
     const handleLogout = () => {
         dispatch(signOut());
