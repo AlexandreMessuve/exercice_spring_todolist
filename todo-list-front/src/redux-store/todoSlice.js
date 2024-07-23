@@ -143,5 +143,5 @@ export const selectTodos = (state) => state.todo.todosList;
 export const selectError = (state) => state.todo.error;
 export const selectStatus = (state) => state.todo.status;
 export const selectIsError = (state) => state.todo.error != null;
-export const selectTodoById = (state, todoId) => state.todosList.find((todo) => todo.id == todoId)
+export const selectTodoById = (state, todoId) => state.todo.todosList.find((todo)=> todo.id == todoId)
 export default todoSlice.reducer;

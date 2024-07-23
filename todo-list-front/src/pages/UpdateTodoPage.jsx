@@ -7,7 +7,6 @@ import {selectTodoById} from "../redux-store/todoSlice.js";
 const UpdateTodoPage = () => {
     const {todoId} = useParams();
     const todo = useSelector(state => selectTodoById(state, todoId))
-
     useEffect(() => {
         console.log(todo)
     }, [todo]);

@@ -1,4 +1,4 @@
-export const API_URL = "http://localhost:8090/api";
+export const API_URL = "http://10.125.52.77:8090/api";
 
 export const URL_LOGIN = "/auth/login";
 export const URL_REGISTER = "/auth/register";
