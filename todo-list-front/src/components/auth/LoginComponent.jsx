@@ -34,7 +34,7 @@ export const  LoginComponent = () => {
             }
         }).catch(error => {
             console.log(error);
-            toast.error('Login failed')
+            toast.error('Invalid email or password');
         });
     };
     return(

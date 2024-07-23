@@ -24,10 +24,13 @@ export const RegisterComponent = () => {
             console.log(response);
             if (response.status === 200){
                 console.log("success register" , response.data)
-                toast.success('Register successfully')
+                toast.success('Registered successfully')
                 navigate(URL_LOGIN)
             }
-        }).catch(error => console.log(error));
+        }).catch(error => {
+            console.log(error);
+            toast.error('Registered failed')
+        });
     };
     return(
         <>
