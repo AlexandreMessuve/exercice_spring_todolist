@@ -5,13 +5,14 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: tp_todo_list
-    ports:
-      - "3306:3306"
     volumes:
       - mysql-data:/var/lib/mysql
+    networks:
+      todo-list-app:
 
-  springboot-app:
-    image: todo_list_back-application:latest
+  back:
+    image: todo_list_back:latest
+    container_name: back
     build: .
     ports:
       - "8090:8090"
@@ -21,6 +22,20 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/tp_todo_list
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
+    networks:
+      todo-list-app:
+  front:
+    image: todo-list-front:latest
+    container_name: front
+    build: .
+    ports:
+      - '80:80'
+    networks:
+      todo-list-app:
 
+
+
+networks:
+  todo-list-app:
 volumes:
   mysql-data:

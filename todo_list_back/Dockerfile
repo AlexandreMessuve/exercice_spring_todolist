@@ -1,14 +1,16 @@
-# Utiliser une image de base contenant le JDK de Java
-FROM openjdk:17-jdk-slim
+FROM maven:3.6-openjdk-17 AS build
 
-# Définir le répertoire de travail
 WORKDIR /app
 
-# Copier le fichier JAR de votre application dans le conteneur
-COPY target/todo_list_back-0.0.1-SNAPSHOT.jar app.jar
+COPY pom.xml .
+COPY src ./src
 
-# Exposer le port que l'application utilise
+RUN mvn clean package -DskipTests
+
+FROM openjdk:17-jdk-slim
+
+COPY --from=build /app/target/todo_list_back-0.0.1-SNAPSHOT.jar app.jar
+
 EXPOSE 8090
 
-# Définir la commande pour exécuter l'application
 ENTRYPOINT ["java", "-jar", "app.jar"]
