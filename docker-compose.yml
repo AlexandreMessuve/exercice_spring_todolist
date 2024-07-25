@@ -12,6 +12,18 @@ services:
     networks:
       todo-list-app:
 
+  interface:
+    image: phpmyadmin
+    container_name: phpmyadmin-todolist
+    depends_on:
+      - mysql
+    environment:
+      - PMA_HOST=mysql
+      - PMA_PORT=3306
+    ports:
+      - "8001:80"
+    networks:
+      - todo-list-app
   back:
     build: 
       context: ./todo_list_back
