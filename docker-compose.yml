@@ -34,9 +34,12 @@ services:
     depends_on:
       - mysql
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/tp_todo_list
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_PORT: 8090
+      DB_URL: mysql:3306
+      DB_NAME: tp_todo_list
+      DB_USERNAME: change_me
+      DB_PASSWORD: change_me
+      JWT_SECRET: change_me
     networks:
       todo-list-app:
   front:
