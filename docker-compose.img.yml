@@ -24,9 +24,7 @@ services:
     networks:
       - todo-list-app
   back:
-    build: 
-      context: ./todo_list_back
-      dockerfile: Dockerfile
+    image: alexandremessuvem2i/todolist-back
     container_name: back
     ports:
       - "8090:8090"
@@ -41,9 +39,7 @@ services:
     networks:
       todo-list-app:
   front:
-    build: 
-      context: ./todo_list_front
-      dockerfile: Dockerfile
+    image: alexandremessuvem2i/todolist-front
     container_name: front
     ports:
       - '80:80'

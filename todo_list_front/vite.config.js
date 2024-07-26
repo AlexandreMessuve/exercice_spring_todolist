@@ -16,6 +16,6 @@ export default defineConfig({
     port: 80,
     strictPort: true,
     host: '0.0.0.0',
-    origin: "http://0.0.0.0:5173",
+    origin: "http://0.0.0.0:80",
   },
 });
