@@ -6,7 +6,7 @@
 - Install [Docker](https://www.docker.com/products/docker-desktop/) 
 - Clone this repo
 ````bash
-git clone https://github.com/AlexandreMessuve/ecf03-systeme_gestion_inventaire_magasin.git
+git clone https://github.com/AlexandreMessuve/exercice_spring_todolist.git
 ````
 ## Step 2
 
